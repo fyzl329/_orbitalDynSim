@@ -3,6 +3,30 @@ A quick research project (and study) on the different numeric integrators used t
 
 _The main aim of this research is going to be to figure out if developing a custom integrator offers tangible advantages over existing methods (mainly for my project [Fizix Mech](https://github.com/fyzl329/fizixmech))_
 
+## Project Structure
+```
+_orbitalDynSim/
+├── simulators/     # Integration method implementations (euler.py, verlet.py, rk4.py)
+├── data/           # Simulation outputs (CSV logs, PNG plots)
+├── analysis/       # Analysis and visualization scripts
+├── README.md
+└── .gitignore
+```
+
+## Usage
+
+### Run a simulation
+```bash
+python simulators/euler.py
+```
+Outputs saved to `data/` folder.
+
+### Analyze simulation data
+```bash
+python analysis/csv-plot.py
+```
+Reads CSV from `data/` and saves plots to `data/` folder.
+
 ## Core Comparison
 - Euler Method
 - Verlet
@@ -14,19 +38,19 @@ _The main aim of this research is going to be to figure out if developing a cust
 
 ## Tech Stack
 
-**Core:**  
-Python  
+**Core:**
+Python
 numpy
 
-**Plotting**  
-matplotlib 
+**Plotting**
+matplotlib
 
-**Data / Logging**  
+**Data / Logging**
 pandas
 
-**Version Control / Portfolio:**  
-GitHub  
+**Version Control / Portfolio:**
+GitHub
 
-**Probably will add at the latter end of the research**  
-scipy  
+**Probably will add at the latter end of the research**
+scipy
 numba
