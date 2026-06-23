@@ -135,6 +135,14 @@ def rk4_step(x, y, vx, vy, dt, mu=1.0):
     
     return new_x, new_y, new_vx, new_vy
 
+# Registry mapping integrator names to solver functions.
+# To add a custom integrator, simply define its step function and register it here!
+INTEGRATORS = {
+    "euler": euler_step,
+    "verlet": verlet_step,
+    "rk4": rk4_step
+}
+
 # =====================================================================
 # 3. SIMULATION RUNNER
 # =====================================================================
@@ -185,15 +193,11 @@ def run_simulation(method, x0=1.0, y0=0.0, vx0=0.0, vy0=1.0, dt=0.005, steps=200
         angular_momenta.append(L)
         momentum_errors.append(l_err)
         
-        # Step forward using the chosen method
-        if method == "euler":
-            x, y, vx, vy = euler_step(x, y, vx, vy, dt)
-        elif method == "verlet":
-            x, y, vx, vy = verlet_step(x, y, vx, vy, dt)
-        elif method == "rk4":
-            x, y, vx, vy = rk4_step(x, y, vx, vy, dt)
+        # Step forward using the registered solver
+        if method in INTEGRATORS:
+            x, y, vx, vy = INTEGRATORS[method](x, y, vx, vy, dt)
         else:
-            raise ValueError(f"Unknown integration method: {method}")
+            raise ValueError(f"Unknown integration method: '{method}'. Registered: {list(INTEGRATORS.keys())}")
             
         t += dt
         

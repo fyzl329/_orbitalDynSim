@@ -132,7 +132,7 @@ cbse_project/
 
 ## 5. Implementation Details
 
-I wrote the simulator procedural-style using normal Python functions (`def`) and standard loops. This makes it super straightforward for me to explain to external examiners:
+I wrote the simulator procedural-style using normal Python functions (`def`) and standard loops.:
 * **`get_acceleration()`**: Computes acceleration components $a_x$ and $a_y$ based on the satellite's current coordinates.
 * **`euler_step()`, `verlet_step()`, `rk4_step()`**: Take the current state and step it forward by $\Delta t$ using their respective formulas.
 * **`run_simulation()`**: The main loop that repeatedly updates coordinates and saves data to lists. At the end, it uses `pd.DataFrame()` to package the lists.
@@ -140,7 +140,40 @@ I wrote the simulator procedural-style using normal Python functions (`def`) and
 
 ---
 
-## 6. Results & Discussion
+## 6. How to Add Your Custom Integrator
+If you want to contribute a custom solver, you can register it in the simulation loop in three steps:
+
+1. **Write your step function** in `main.py`. The function must take the current state and timestep, and return the updated state:
+   ```python
+   def my_custom_step(x, y, vx, vy, dt, mu=1.0):
+       # 1. Get acceleration
+       ax, ay = get_acceleration(x, y, mu)
+       # 2. Write your step logic (e.g. leapfrog or custom approximation)
+       new_x = x + vx * dt
+       new_y = y + vy * dt
+       new_vx = vx + ax * dt
+       new_vy = vy + ay * dt
+       # 3. Return the next state
+       return new_x, new_y, new_vx, new_vy
+   ```
+2. **Register it** in the `INTEGRATORS` dictionary map inside `main.py`:
+   ```python
+   INTEGRATORS = {
+       "euler": euler_step,
+       "verlet": verlet_step,
+       "rk4": rk4_step,
+       "custom": my_custom_step  # <-- Register your solver here!
+   }
+   ```
+3. **Execute and analyze**: Add your custom key (e.g. `"custom"`) to the method list inside the `main()` function:
+   ```python
+       for method in ["euler", "verlet", "rk4", "custom"]:
+   ```
+The program will automatically simulate your track, export the CSV telemetry, and plot your integrator's conservation errors alongside the default ones!
+
+---
+
+## 7. Results & Discussion
 
 ### Data Summary (Output Table)
 When the script is executed, Pandas calculates the following statistical metrics:
@@ -175,13 +208,13 @@ Verlet and RK4 conserve angular momentum down to the limits of machine precision
 
 ---
 
-## 7. Conclusion & Learnings
+## 8. Conclusion & Learnings
 * **What I Learned:** Numerical simulations are highly sensitive to the math used. The simplest solution (Euler) fails immediately when dealing with orbital dynamics because it doesn't conserve energy.
 * **Informatics Practices / CS Application:** Using Pandas DataFrames made it incredibly easy to manage time-series datasets and export them to CSVs with one function (`to_csv`). Matplotlib subplots and log scales were key in showing the difference between Euler's massive errors and Verlet/RK4's tiny, precision-level errors.
 
 ---
 
-## 8. Bibliography & References
+## 9. Bibliography & References
 1. *CBSE Class XII Informatics Practices / Computer Science Textbook* (NCERT).
 2. *Classical Mechanics* by Herbert Goldstein (for equations of motion & conservation laws).
 3. *Numerical Recipes in C/Python* (for RK4 integration algorithms).
