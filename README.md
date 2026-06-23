@@ -180,9 +180,9 @@ When the script is executed, Pandas calculates the following statistical metrics
 
 | Method | Mean Radius | Radius Std Dev | Max Energy Error | Max L Error | Orbit Type |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **EULER** | 1.1896 | 0.116812 | 3.82e-01 | 1.83e-01 | Unstable (Spiral) |
-| **VERLET** | 1.0000 | 0.000003 | 1.54e-12 | 1.63e-14 | Stable (Circular) |
-| **RK4** | 1.0000 | 0.000000 | 3.19e-13 | 4.88e-15 | Stable (Circular) |
+| **EULER** | 1.2712 | 0.136082 | 3.25e-01 | 2.17e-01 | Unstable (Spiral) |
+| **VERLET** | 1.0000 | 0.000004 | 1.56e-10 | 1.04e-14 | Stable (Circular) |
+| **RK4** | 1.0000 | 0.000000 | 6.52e-12 | 3.26e-12 | Stable (Circular) |
 
 *Note: The exact numbers may slightly vary depending on simulation step size ($dt$) and steps.*
 
