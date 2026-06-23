@@ -28,13 +28,13 @@ Imagine you are drawing a circle on a piece of paper, but you are **only allowed
 
 In physics and computing, a **numerical integrator** is just the set of rules (equations) the computer uses to draw those short, straight lines to trace the path of a moving object (like a satellite orbiting a planet). Since computers cannot calculate continuous motion (they can only calculate step-by-step numbers), they guess the next position over a tiny slice of time ($dt$).
 
-### The Three Methods We Used (And Why We Use Them)
-To simulate the orbit, we used three different ways to calculate these straight lines. They represent a trade-off between simplicity, speed, and accuracy:
+### The Three Methods I Used (And Why I Chose Them)
+To simulate the orbit, I used three different ways to calculate these straight lines. They represent a trade-off between simplicity, speed, and accuracy:
 
 1. **The Euler Method (The "Quick & Simple" Guess):**
    * *How it works:* It looks at where the satellite is right now, calculates the gravity at this exact spot, and draws a straight line in that direction for the next step.
    * *The Problem:* Because gravity is constantly changing, the satellite should be bending inward. Euler ignores this change during the step, causing the satellite to overshoot. Over time, these tiny errors add up. The satellite gains artificial energy and spirals away into outer space.
-   * *Why we study it:* It is the simplest method to code, acting as our baseline to show why we need better math.
+   * *Why I studied it:* It is the simplest method to code, acting as my baseline to show why I need better math.
 
 2. **The Velocity Verlet Method (The "Smart & Stable" Compromise):**
    * *How it works:* Instead of just looking at the start of the step, Verlet calculates the position, finds the gravity at the new position, and then goes back to adjust the velocity.
@@ -42,7 +42,7 @@ To simulate the orbit, we used three different ways to calculate these straight 
 
 3. **The Runge-Kutta 4th Order / RK4 Method (The "Perfectionist" Calculator):**
    * *How it works:* RK4 is like checking the road four times before taking a single step. It calculates the gravity at the start, at two points in the middle, and at the end of the time step. It then takes a weighted average of all four calculations to make an extremely smart step.
-   * *Why we use it:* It is incredibly accurate. If you are NASA landing a spacecraft on Mars or launching a GPS satellite, a millimeter of error can ruin the mission. RK4 provides the extreme precision needed for real-world space travel.
+   * *Why I chose it:* It is incredibly accurate. If you are NASA landing a spacecraft on Mars or launching a GPS satellite, a millimeter of error can ruin the mission. RK4 provides the extreme precision needed for real-world space travel.
 
 ---
 
@@ -53,11 +53,11 @@ For a satellite orbiting a central body (like a planet or star), the only force 
 
 $$F = G \frac{M m}{r^2}$$
 
-By dividing by the satellite's mass ($m$), we get the acceleration vector:
+By dividing by the satellite's mass ($m$), I obtain the acceleration vector:
 
 $$\vec{a} = - \mu \frac{\vec{r}}{r^3}$$
 
-where $\mu = GM$ is the standard gravitational parameter (we define $\mu = 1.0$ for normalized circular orbits). In 2D Cartesian coordinates, the satellite's position state is $\mathbf{r} = [x, y]$ and its velocity state is $\mathbf{v} = [v_x, v_y]$. 
+where $\mu = GM$ is the standard gravitational parameter (I define $\mu = 1.0$ for normalized circular orbits). In 2D Cartesian coordinates, the satellite's position state is $\mathbf{r} = [x, y]$ and its velocity state is $\mathbf{v} = [v_x, v_y]$. 
 
 The distance from the center is:
 $$r = \sqrt{x^2 + y^2}$$
@@ -67,7 +67,7 @@ $$a_x(x, y) = -\frac{\mu x}{(x^2 + y^2)^{3/2}}$$
 $$a_y(x, y) = -\frac{\mu y}{(x^2 + y^2)^{3/2}}$$
 
 ### 3.2 Conservation Laws (Conserved Quantities)
-To verify the physical correctness of the simulation, we calculate two key conservation values at each step:
+To verify the physical correctness of the simulation, I calculate two key conservation values at each step:
 1. **Total Mechanical Energy ($E$):**
    $$E = E_{\text{kinetic}} + E_{\text{potential}} = \frac{1}{2}(v_x^2 + v_y^2) - \frac{\mu}{\sqrt{x^2 + y^2}}$$
 2. **Angular Momentum ($L$):**
@@ -99,7 +99,7 @@ $$v_{y,n+1} = v_{y,n} + \frac{1}{2}(a_{y,n} + a_{y,n+1}) \Delta t$$
 *Why it works:* Verlet is a second-order method ($\mathcal{O}(\Delta t^3)$ local error) and is *symplectic*. This means it maintains a bounded energy envelope: energy fluctuates slightly but never accumulates or drifts monotonically over time.
 
 #### C. Runge-Kutta 4th Order (RK4)
-A highly precise, classical multi-stage solver. If we define the combined state vector as $\mathbf{w} = [x, y, v_x, v_y]^T$, the system of differential equations is $\frac{d\mathbf{w}}{dt} = \mathbf{f}(t, \mathbf{w})$. 
+A highly precise, classical multi-stage solver. If I define the combined state vector as $\mathbf{w} = [x, y, v_x, v_y]^T$, the system of differential equations is $\frac{d\mathbf{w}}{dt} = \mathbf{f}(t, \mathbf{w})$. 
 
 RK4 calculates four intermediate slopes:
 $$\mathbf{k}_1 = \mathbf{f}(t_n, \mathbf{w}_n)$$
@@ -132,7 +132,7 @@ cbse_project/
 
 ## 5. Implementation Details
 
-We wrote the simulator procedural-style using normal Python functions (`def`) and standard loops. This makes it super straightforward to explain to external examiners:
+I wrote the simulator procedural-style using normal Python functions (`def`) and standard loops. This makes it super straightforward for me to explain to external examiners:
 * **`get_acceleration()`**: Computes acceleration components $a_x$ and $a_y$ based on the satellite's current coordinates.
 * **`euler_step()`, `verlet_step()`, `rk4_step()`**: Take the current state and step it forward by $\Delta t$ using their respective formulas.
 * **`run_simulation()`**: The main loop that repeatedly updates coordinates and saves data to lists. At the end, it uses `pd.DataFrame()` to package the lists.
