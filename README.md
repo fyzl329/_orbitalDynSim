@@ -184,7 +184,7 @@ When the script is executed, Pandas calculates the following statistical metrics
 | **VERLET** | 1.0000 | 0.000004 | 1.56e-10 | 1.04e-14 | Stable (Circular) |
 | **RK4** | 1.0000 | 0.000000 | 6.52e-12 | 3.26e-12 | Stable (Circular) |
 
-*Note: The exact numbers may slightly vary depending on simulation step size ($dt$) and steps.*
+*Note: The exact numbers may slightly vary depending on simulation step size (dt) and steps.*
 
 ### Interpretation of Results
 1. **Euler Method is Unphysical:** As predicted, the Euler method is highly unstable. The standard deviation of the radius is massive, indicating the satellite is spiraling away from the star due to artificial energy creation.
